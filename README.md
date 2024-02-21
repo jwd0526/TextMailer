@@ -6,7 +6,7 @@ Email Creation: TextMailer uses the Simple Java Mail library to construct an ema
 
 **SMTP Interaction:** Once the email is created, TextMailer interacts with an SMTP server to send the email. This is done using the Mailer class from the Simple Java Mail library, which handles the connection to the SMTP server and sends the email using the send() method.
 
-**MMS Conversion:** If the goal is to send an MMS message, TextMailer will format the recipient's address using the carrier's MMS gateway. For example, if the recipient's phone number is "1234567890" and the carrier's MMS gateway is "@mms.carrier.com", the address used to send the MMS would be "1234567890@mms.carrier.com"
+**MMS Conversion:** TextMailer will format the recipient's address using the carrier's MMS gateway. For example, if the recipient's phone number is "1234567890" and the carrier's MMS gateway is "@mms.carrier.com", the address used to send the MMS would be "1234567890@mms.carrier.com"
 
 **Sending MMS:** The email, now formatted to be sent as an MMS, is transmitted through the SMTP server to the carrier's MMS gateway, which then converts the email into an MMS message and delivers it to the recipient's mobile device.
 
@@ -27,12 +27,12 @@ To use TextMailer in your Java project, you can add the following dependency to 
 <dependency>
     <groupId>org.simplejavamail</groupId>
     <artifactId>simple-java-mail</artifactId>
-    <version>6.1.3</version>
+    <version>8.6.3</version>
 </dependency>
 ```
 Or if you're using Gradle, add this to your build.gradle file:
 ```
-implementation 'org.simplejavamail:simple-java-mail:6.1.3'`
+implementation 'org.simplejavamail:simple-java-mail:8.6.3'`
 ```
 Additionally, be sure to add the supplied 'TextMailer.jar' file to your classpath.
 ## Usage
@@ -43,7 +43,7 @@ Additionally, be sure to add the supplied 'TextMailer.jar' file to your classpat
 
 Add these parameters as command line arguments ([host] [smtp] [appPass])
 
-**Initialize TextMailer:** Create an instance of the TextMailer class and set up the SMTP server details using command-line arguments.
+**Initialize TextMailer:** The main method will create an instance of TextMailer and initialize it with the command line arguments.
 ```
 public static void main(String[] args) {
     TextMailer txt = new TextMailer();
@@ -78,14 +78,21 @@ TextMailer supports sending text messages to the following carriers:
 * Verizon Wireless
 * Virgin Mobile
 
+To determine a phone number's cell carrier, use a website like [https://freecarrierlookup.com/](url).
+* Additionally, there are API services that could be used to automate this carrier assignment, but I could not find any free of charge.
+
 ## Additional Comments
 * Designed as a way to send mms/sms messages for free in an automated format.
+* On my machine, there is a bug with SLF4J: 'SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
+  * SLF4J does offer a solution to this ([http://www.slf4j.org/codes.html#StaticLoggerBinder](url)), but I could not get it to work.
+  * This bug does not impact code functionality.
 * Due to my fear of annoying people, I've yet to test this on a large scale, 15 people at most, so i'm not sure how well it could handle large numbers of recipients.
   * I'm sure a multiThreading approach would work.
 * The ScheduledExecutorService class implementation enables the repetition of the send() method with slight modification.
   * Change the scheduleSend() method to void, and remove the return statement.
   * Line 87: `scheduler.schedule(task, initialDelay, TimeUnit.MILLISECONDS);` --> `scheduler.scheduleAtFixedRate(task, initialDelay, [TimeUnit], TimeUnit.MILLISECONDS);`
   * Line 168: `txt.scheduleSend(hours, minutes).close();` --> `txt.scheduleSend(hours, minutes);`
+* To see another implementation of this idea, check out my other project [https://github.com/jwd0526/PuppyPledge](url)
 
 ## Contributing
 Contributions to TextMailer are much welcome. If you encounter any issues or have suggestions for improvements, feel free to open an issue or submit a pull request.

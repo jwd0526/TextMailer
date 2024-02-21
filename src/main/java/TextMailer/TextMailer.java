@@ -5,6 +5,7 @@ import org.simplejavamail.api.mailer.Mailer;
 import org.simplejavamail.api.mailer.config.TransportStrategy;
 import org.simplejavamail.email.EmailBuilder;
 import org.simplejavamail.mailer.MailerBuilder;
+
 import java.time.Duration;
 import java.time.LocalDateTime;
 
@@ -14,7 +15,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+// Main class definition
 public class TextMailer {
+    // Array containing carrier information for MMS
     private static final String[][] carrierMMS = {
             {"Alltel", "", "mms.alltelwireless.com"},
             {"AT&T", "", "mms.att.net"},
@@ -29,6 +32,8 @@ public class TextMailer {
             {"Verizon Wireless", "", "vzwpix.com"},
             {"Virgin Mobile", "", "vmpix.com"}
     };
+    
+    // Instance variables for the TextMailer class
     private String host;
     private String smtp;
     private String appPass;
@@ -41,14 +46,17 @@ public class TextMailer {
     public Email getEmail() {
         return email;
     }
-    // Setters for email
+    
+    // Setter for adding recipients
     public void addRecipient(String recPhoneNum, String carrier) {
         String rec = "";
+        // Iterating through carrierMMS array to find matching carrier
         for (String[] carrierMM : carrierMMS) {
             if (carrier.equalsIgnoreCase(carrierMM[0])) {
                 rec = recPhoneNum + "@" + carrierMM[2];
             }
         }
+        // Adding new recipient to recipients array
         String[] temp = new String[getRecipients().length + 1];
         for (int i = 0; i < getRecipients().length; i++) {
             temp[i] = getRecipients()[i];
@@ -56,10 +64,13 @@ public class TextMailer {
         temp[temp.length - 1] = rec;
         this.recipients = temp;
     }
+    
+    // Setter for adding text message
     public void addText(String text) {
         this.bodyMessage += text;
     }
 
+    // Getter for body message
     public String getBodyMessage() {
         return this.bodyMessage;
     }
@@ -72,14 +83,12 @@ public class TextMailer {
                 .buildMailer();
     }
 
-
-
     // Getter for recipients
     public String[] getRecipients() {
         return this.recipients;
     }
 
-    // Setter for recipients
+    // Method to schedule sending of message
     private ScheduledExecutorService scheduleSend(int hours, int minutes) {
         long initialDelay = calculateInitialDelay(hours, minutes, 0);
         Runnable task = this::send;
@@ -88,6 +97,7 @@ public class TextMailer {
         return scheduler;
     }
 
+    // Method to calculate initial delay before sending message
     public long calculateInitialDelay(int targetHour, int targetMin, int targetSec) {
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime nextRun = now.withHour(targetHour).withMinute(targetMin).withSecond(targetSec);
@@ -97,6 +107,7 @@ public class TextMailer {
         return Duration.between(now, nextRun).toMillis();
     }
 
+    // Method to send message
     private void send() {
         for (String recipient : getRecipients()) {
             System.out.println("\nSending message to " + recipient + "...");
@@ -110,6 +121,7 @@ public class TextMailer {
         }
     }
 
+    // Method to populate message recipients
     public void popMessage() {
         Scanner s = new Scanner(System.in);
         System.out.println("For each recipient, enter the number, then when prompted, enter the carrier. After adding all desired recipients, type \"stop\".");
@@ -150,6 +162,7 @@ public class TextMailer {
         addText(message);
     }
 
+    // Method to send message with specified delivery method
     public void sendWithDeliveryMethod(TextMailer txt) {
         Scanner s = new Scanner(System.in);
         while (true) {
@@ -178,6 +191,7 @@ public class TextMailer {
         }
     }
 
+    // Main method
     public static void main(String[] args) {
         TextMailer txt = new TextMailer();
         txt.host = args[0];

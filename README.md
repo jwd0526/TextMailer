@@ -37,7 +37,7 @@ implementation 'org.simplejavamail:simple-java-mail:6.1.3'`
 Additionally, be sure to add the supplied 'TextMailer.jar' file to your classpath.
 ## Usage
 **Command Line Arguments:** There are three command line arguments: host, smtp, and appPass
-* host: The email address used to host the messanging.
+* host: The email address used to host the messaging.
 * smtp: The SMTP server gateway (i.e. smtp.gmail.com).
 * appPass: Your authentification token.
 
@@ -88,7 +88,7 @@ TextMailer supports sending text messages to the following carriers:
   * Line 168: `txt.scheduleSend(hours, minutes).close();` --> `txt.scheduleSend(hours, minutes);`
 
 ## Contributing
-Contributions to TextMailer are welcome! If you encounter any issues or have suggestions for improvements, feel free to open an issue or submit a pull request on GitHub.
+Contributions to TextMailer are much welcome. If you encounter any issues or have suggestions for improvements, feel free to open an issue or submit a pull request.
 
 ## License
 This project is licensed under the MIT License.

@@ -2,7 +2,7 @@
 TextMailer is a Java package that allows you to send text messages via email to various mobile carriers. It provides a convenient way to compose and schedule text messages to be delivered at a specified time.
 
 ## How TextMailer Works
-Email Creation: TextMailer uses the Simple Java Mail library to construct an email. This involves specifying the recipient, message content, and any attachments. The library provides a fluent interface to build the email object.
+**Email Creation:** TextMailer uses the Simple Java Mail library to construct an email. This involves specifying the recipient, message content, and any attachments. The library provides a fluent interface to build the email object.
 
 **SMTP Interaction:** Once the email is created, TextMailer interacts with an SMTP server to send the email. This is done using the Mailer class from the Simple Java Mail library, which handles the connection to the SMTP server and sends the email using the send() method.
 
